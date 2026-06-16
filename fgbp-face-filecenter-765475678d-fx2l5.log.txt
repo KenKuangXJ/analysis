@@ -1,0 +1,154 @@
+2026-06-16 15:03:55.907  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.base.interceptor.BaseLogAspect   : className=FileController,methodName=download,begin,request=测试微众推送-RW20260609000017;
+2026-06-16 15:03:55.907  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.base.interceptor.BaseLogAspect   : respond=,cost=0,end
+2026-06-16 15:03:55.907  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.l.s.StatsdLogServiceImpl         : className=FileController,methodName=download,end...
+2026-06-16 15:33:20.890  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.base.interceptor.BaseLogAspect   : className=FileController,methodName=singleUpload,begin,request=;{
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+};
+2026-06-16 15:33:20.890  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.controller.FileController    : 上传文件packet: {
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+}
+2026-06-16 15:33:20.957  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:21.150  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] io.lettuce.core.EpollProvider            : Starting with epoll library
+2026-06-16 15:33:21.153  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2026-06-16 15:33:21.482  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.v.config.ConfCfssRibbonClient      : init version,StrategyLoadBalanceConfiguration..
+2026-06-16 15:33:21.666  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.v.config.ConfCfssRibbonClient      : init StrategyLoadBalanceConfiguration
+2026-06-16 15:33:21.676  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.netflix.config.ChainedDynamicProperty  : Flipping property: FGBP-provider-filecenter.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2026-06-16 15:33:22.369  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.netflix.loadbalancer.BaseLoadBalancer  : Client: FGBP-provider-filecenter instantiated a LoadBalancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=FGBP-provider-filecenter,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:null
+2026-06-16 15:33:22.378  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.l.DynamicServerListLoadBalancer      : Using serverListUpdater PollingServerListUpdater
+2026-06-16 15:33:22.382  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] com.alibaba.nacos.client.naming          : [SUBSCRIBE-SERVICE] service:FGBP-PROVIDER-FILECENTER, group:DEFAULT_GROUP, clusters: 
+2026-06-16 15:33:22.384  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] com.alibaba.nacos.client.naming          : init new ips(1) service: DEFAULT_GROUP@@FGBP-PROVIDER-FILECENTER -> [{"ip":"10.240.17.126","port":8064,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@FGBP-PROVIDER-FILECENTER","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000}]
+2026-06-16 15:33:22.384  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] com.alibaba.nacos.client.naming          : current ips:(1) service: DEFAULT_GROUP@@FGBP-PROVIDER-FILECENTER -> [{"ip":"10.240.17.126","port":8064,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"DEFAULT","serviceName":"DEFAULT_GROUP@@FGBP-PROVIDER-FILECENTER","metadata":{"preserved.register.source":"SPRING_CLOUD"},"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000}]
+2026-06-16 15:33:22.395  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.netflix.config.ChainedDynamicProperty  : Flipping property: FGBP-provider-filecenter.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2026-06-16 15:33:22.449  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.l.DynamicServerListLoadBalancer      : DynamicServerListLoadBalancer for client FGBP-provider-filecenter initialized: DynamicServerListLoadBalancer:{NFLoadBalancer:name=FGBP-provider-filecenter,current list of Servers=[10.240.17.126:8064],Load balancer stats=Zone stats: {unknown=[Zone:unknown;	Instance count:1;	Active connections count: 0;	Circuit breaker tripped count: 0;	Active connections per server: 0.0;]
+},Server stats: [[Server:10.240.17.126:8064;	Zone:UNKNOWN;	Total Requests:0;	Successive connection failure:0;	Total blackout seconds:0;	Last connection made:Thu Jan 01 08:00:00 CST 1970;	First connection made: Thu Jan 01 08:00:00 CST 1970;	Active Connections:0;	total failure count in last (1000) msecs:0;	average resp time:0.0;	90 percentile resp time:0.0;	95 percentile resp time:0.0;	min resp time:0.0;	max resp time:0.0;	stddev resp time:0.0]
+]}ServerList:cn.net.cfss.version.ribbon.CfssServerList@3c1f46a0
+2026-06-16 15:33:22.759  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:22.788  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:22.788  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : upperCase: JPG,ZIP,JAR,MP4,XLS,XLSX,POM,PNG,TXT,MP3,JPEG,BMP,GIF,DOC,DOCX,LOG,APK,APK,HTML,PDF,PPT,PPTX,SVG,MOV
+2026-06-16 15:33:22.788  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.controller.FileController    : 文件检查结束,文件类型: jpg,耗时: 1.898 s
+2026-06-16 15:33:22.857  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : plainReq: {"access":"iOSAPP","modType":"isme","thumb":"1","voKey":"iOSAPP_isme"}
+2026-06-16 15:33:22.857  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:22.864  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:22.870  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:22.950  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.service.MyFileService        : 缩略图配置: {"access":"DEFAULT","createBy":"1","createTime":"2020-05-14 09:11:23","deleteFlag":"NOT_DEL","exts":"jpg,zip,jar,mp4,xls,xlsx,pom,png,txt,MP3,jpeg,bmp,gif,doc,docx,log,apk,APK,html,pdf,ppt,pptx,svg,mov","id":1001,"modType":"DEFAULT","thumbHeight":400,"thumbPercent":0.3,"thumbWidth":100,"updateBy":"1","updateTime":1589418688000}
+2026-06-16 15:33:22.952  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,begin..fileSize=362057
+2026-06-16 15:33:22.972  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [010101ycloud-33] com.alibaba.nacos.common.remote.client   : [612dddb4-95e0-452d-b7f1-b42c0812eedf] Receive server push request, request = NotifySubscriberRequest, requestId = 184049
+2026-06-16 15:33:22.973  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [010101ycloud-33] com.alibaba.nacos.common.remote.client   : [612dddb4-95e0-452d-b7f1-b42c0812eedf] Ack server push request, request = NotifySubscriberRequest, requestId = 184049
+2026-06-16 15:33:23.382  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [erListUpdater-0] c.netflix.config.ChainedDynamicProperty  : Flipping property: FGBP-provider-filecenter.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit = 2147483647
+2026-06-16 15:33:23.579  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,end..fileSize=362057
+2026-06-16 15:33:23.653  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.f.f.controller.FileController    : 文件上传结束返回报文: {"fullPath":"group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860_30p_.jpg","fileSize":"353.571","fileHash":"4cf0be39dbc4f609f13864830f6aab8a","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860.jpg","id":"62403955768694352","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860_30p_.jpg"},耗时: 2.762 s
+2026-06-16 15:33:23.655  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.base.interceptor.BaseLogAspect   : respond={"plain":{"resultCode":"000","details":{"fullPath":"group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860_30p_.jpg","fileSize":"353.571","fileHash":"4cf0be39dbc4f609f13864830f6aab8a","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860.jpg","id":"62403955768694352","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdb6nAAWGSbfptBw860_30p_.jpg"},"resultMsg":"成功"}},cost=2765,end
+2026-06-16 15:33:23.655  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-1] c.n.c.f.l.s.StatsdLogServiceImpl         : className=FileController,methodName=singleUpload,end...
+2026-06-16 15:33:23.856  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.base.interceptor.BaseLogAspect   : className=FileController,methodName=singleUpload,begin,request=;{
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+};
+2026-06-16 15:33:23.856  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.controller.FileController    : 上传文件packet: {
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+}
+2026-06-16 15:33:23.865  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:23.873  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:23.875  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:23.875  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : upperCase: JPG,ZIP,JAR,MP4,XLS,XLSX,POM,PNG,TXT,MP3,JPEG,BMP,GIF,DOC,DOCX,LOG,APK,APK,HTML,PDF,PPT,PPTX,SVG,MOV
+2026-06-16 15:33:23.875  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.controller.FileController    : 文件检查结束,文件类型: jpg,耗时: 19.07 ms
+2026-06-16 15:33:23.877  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : plainReq: {"access":"iOSAPP","modType":"isme","thumb":"1","voKey":"iOSAPP_isme"}
+2026-06-16 15:33:23.877  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:23.883  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:23.884  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:23.884  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.service.MyFileService        : 缩略图配置: {"access":"DEFAULT","createBy":"1","createTime":"2020-05-14 09:11:23","deleteFlag":"NOT_DEL","exts":"jpg,zip,jar,mp4,xls,xlsx,pom,png,txt,MP3,jpeg,bmp,gif,doc,docx,log,apk,APK,html,pdf,ppt,pptx,svg,mov","id":1001,"modType":"DEFAULT","thumbHeight":400,"thumbPercent":0.3,"thumbWidth":100,"updateBy":"1","updateTime":1589418688000}
+2026-06-16 15:33:23.884  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,begin..fileSize=343681
+2026-06-16 15:33:24.086  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,end..fileSize=343681
+2026-06-16 15:33:24.112  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.f.f.controller.FileController    : 文件上传结束返回报文: {"fullPath":"group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025_30p_.jpg","fileSize":"335.626","fileHash":"95b1167c973968e3df40c44bdffe26b2","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025.jpg","id":"62403955768694353","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025_30p_.jpg"},耗时: 256.0 ms
+2026-06-16 15:33:24.147  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.base.interceptor.BaseLogAspect   : respond={"plain":{"resultCode":"000","details":{"fullPath":"group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025_30p_.jpg","fileSize":"335.626","fileHash":"95b1167c973968e3df40c44bdffe26b2","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025.jpg","id":"62403955768694353","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_EOAdYZkAAU-gYQH9TU025_30p_.jpg"},"resultMsg":"成功"}},cost=291,end
+2026-06-16 15:33:24.148  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-4] c.n.c.f.l.s.StatsdLogServiceImpl         : className=FileController,methodName=singleUpload,end...
+2026-06-16 15:33:24.290  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.base.interceptor.BaseLogAspect   : className=FileController,methodName=singleUpload,begin,request=;{
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+};
+2026-06-16 15:33:24.290  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.controller.FileController    : 上传文件packet: {
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+}
+2026-06-16 15:33:24.290  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:24.296  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:24.298  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:24.298  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : upperCase: JPG,ZIP,JAR,MP4,XLS,XLSX,POM,PNG,TXT,MP3,JPEG,BMP,GIF,DOC,DOCX,LOG,APK,APK,HTML,PDF,PPT,PPTX,SVG,MOV
+2026-06-16 15:33:24.298  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.controller.FileController    : 文件检查结束,文件类型: jpg,耗时: 7.614 ms
+2026-06-16 15:33:24.300  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : plainReq: {"access":"iOSAPP","modType":"isme","thumb":"1","voKey":"iOSAPP_isme"}
+2026-06-16 15:33:24.300  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:24.306  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:24.308  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:24.308  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.service.MyFileService        : 缩略图配置: {"access":"DEFAULT","createBy":"1","createTime":"2020-05-14 09:11:23","deleteFlag":"NOT_DEL","exts":"jpg,zip,jar,mp4,xls,xlsx,pom,png,txt,MP3,jpeg,bmp,gif,doc,docx,log,apk,APK,html,pdf,ppt,pptx,svg,mov","id":1001,"modType":"DEFAULT","thumbHeight":400,"thumbPercent":0.3,"thumbWidth":100,"updateBy":"1","updateTime":1589418688000}
+2026-06-16 15:33:24.308  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,begin..fileSize=392234
+2026-06-16 15:33:24.489  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,end..fileSize=392234
+2026-06-16 15:33:24.548  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.f.f.controller.FileController    : 文件上传结束返回报文: {"fullPath":"group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347_30p_.jpg","fileSize":"383.041","fileHash":"7511442237921e0414280d6704aa2d25","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347.jpg","id":"62403955768694354","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347_30p_.jpg"},耗时: 257.5 ms
+2026-06-16 15:33:24.548  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.base.interceptor.BaseLogAspect   : respond={"plain":{"resultCode":"000","details":{"fullPath":"group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347_30p_.jpg","fileSize":"383.041","fileHash":"7511442237921e0414280d6704aa2d25","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347.jpg","id":"62403955768694354","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAJg7PAAX8KurXZ08347_30p_.jpg"},"resultMsg":"成功"}},cost=258,end
+2026-06-16 15:33:24.548  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [nio-8063-exec-9] c.n.c.f.l.s.StatsdLogServiceImpl         : className=FileController,methodName=singleUpload,end...
+2026-06-16 15:33:24.657  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.base.interceptor.BaseLogAspect   : className=FileController,methodName=singleUpload,begin,request=;{
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+};
+2026-06-16 15:33:24.658  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.controller.FileController    : 上传文件packet: {
+  "plain" : {
+    "modType" : "isme",
+    "thumb" : "1",
+    "access" : "iOSAPP"
+  },
+  "signature" : "hjhkl"
+}
+2026-06-16 15:33:24.658  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:24.666  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:24.667  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:24.667  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : upperCase: JPG,ZIP,JAR,MP4,XLS,XLSX,POM,PNG,TXT,MP3,JPEG,BMP,GIF,DOC,DOCX,LOG,APK,APK,HTML,PDF,PPT,PPTX,SVG,MOV
+2026-06-16 15:33:24.667  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.controller.FileController    : 文件检查结束,文件类型: jpg,耗时: 9.841 ms
+2026-06-16 15:33:24.670  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : plainReq: {"access":"iOSAPP","modType":"isme","thumb":"1","voKey":"iOSAPP_isme"}
+2026-06-16 15:33:24.670  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: iOSAPP,modType: isme
+2026-06-16 15:33:24.675  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : 开始获取文件配置,access: DEFAULT,modType: DEFAULT
+2026-06-16 15:33:24.677  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : 取不到配置，使用默认的，access=DEFAULT,modType=DEFAULT
+2026-06-16 15:33:24.677  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.service.MyFileService        : 缩略图配置: {"access":"DEFAULT","createBy":"1","createTime":"2020-05-14 09:11:23","deleteFlag":"NOT_DEL","exts":"jpg,zip,jar,mp4,xls,xlsx,pom,png,txt,MP3,jpeg,bmp,gif,doc,docx,log,apk,APK,html,pdf,ppt,pptx,svg,mov","id":1001,"modType":"DEFAULT","thumbHeight":400,"thumbPercent":0.3,"thumbWidth":100,"updateBy":"1","updateTime":1589418688000}
+2026-06-16 15:33:24.677  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,begin..fileSize=376484
+2026-06-16 15:33:24.870  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.l.f.s.DefaultFastFileStorageClient : uploadImage,end..fileSize=376484
+2026-06-16 15:33:24.879  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.f.f.controller.FileController    : 文件上传结束返回报文: {"fullPath":"group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451_30p_.jpg","fileSize":"367.66","fileHash":"1686f4a14691afc7a3615e35e3a06322","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451.jpg","id":"62403955768694355","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451_30p_.jpg"},耗时: 221.5 ms
+2026-06-16 15:33:24.879  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.base.interceptor.BaseLogAspect   : respond={"plain":{"resultCode":"000","details":{"fullPath":"group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451.jpg","fileName":"0.jpg","fullThumbPath":"group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451_30p_.jpg","fileSize":"367.66","fileHash":"1686f4a14691afc7a3615e35e3a06322","fileUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451.jpg","id":"62403955768694355","thumbUrl":"http://resources.sit-test.yykj.com:28888/dfs/group1/M00/02/08/CvAQM2ow_ESAeB09AAW-pKvrYeg451_30p_.jpg"},"resultMsg":"成功"}},cost=222,end
+2026-06-16 15:33:24.880  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [io-8063-exec-10] c.n.c.f.l.s.StatsdLogServiceImpl         : className=FileController,methodName=singleUpload,end...
+2026-06-16 15:37:19.865  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=fastdfs-tracker-svc/172.16.63.13,port=22122,localport=38768]
+2026-06-16 15:37:19.866  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=fastdfs-tracker-svc/172.16.63.13,port=22122,localport=42882]
+2026-06-16 15:37:19.866  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=fastdfs-tracker-svc/172.16.63.13,port=22122,localport=42884]
+2026-06-16 15:37:19.866  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=fastdfs-tracker-svc/172.16.63.13,port=22122,localport=42886]
+2026-06-16 15:37:19.866  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=fastdfs-tracker-svc/172.16.63.13,port=22122,localport=42888]
+2026-06-16 15:37:19.867  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=/10.240.16.51,port=23000,localport=58820]
+2026-06-16 15:37:19.867  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=/10.240.16.51,port=23000,localport=34694]
+2026-06-16 15:37:19.867  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=/10.240.16.51,port=23000,localport=34696]
+2026-06-16 15:37:19.867  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=/10.240.16.51,port=23000,localport=34698]
+2026-06-16 15:37:19.867  INFO [FGBP-FACE-FILECENTER,,,] 1 --- [-evictor-thread] c.n.c.l.f.domain.conn.DefaultConnection  : disconnect from Socket[addr=/10.240.16.51,port=23000,localport=34702]
