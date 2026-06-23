@@ -4,8 +4,8 @@ import { auth } from "@/lib/auth";
 import { generateOrderNumber } from "@/lib/utils";
 
 export async function GET(request: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await auth();
+  if (!user?.id) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
   const [orders, total] = await Promise.all([
     prisma.order.findMany({
-      where: { userId: session.user.id },
+      where: { userId: user.id },
       include: {
         items: {
           include: {
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       skip: (page - 1) * limit,
       take: limit,
     }),
-    prisma.order.count({ where: { userId: session.user.id } }),
+    prisma.order.count({ where: { userId: user.id } }),
   ]);
 
   return NextResponse.json({
@@ -44,8 +44,8 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await auth();
+  if (!user?.id) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
   // 获取购物车
   const cart = await prisma.cart.findUnique({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     include: {
       items: {
         include: { product: true },
@@ -88,7 +88,7 @@ export async function POST(request: Request) {
         orderNumber: generateOrderNumber(),
         totalAmount,
         shippingAddress: shippingAddress || "",
-        userId: session.user.id,
+        userId: user.id,
         status: "PENDING",
         items: {
           create: cart.items.map((item) => ({

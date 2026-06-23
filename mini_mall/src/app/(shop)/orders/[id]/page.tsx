@@ -11,7 +11,7 @@ export default async function OrderDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const session = await auth();
+  const user = await auth();
 
   const order = await prisma.order.findUnique({
     where: { id },
@@ -32,7 +32,7 @@ export default async function OrderDetailPage({
   if (!order) notFound();
 
   // 只能本人或管理员查看
-  if (order.userId !== session?.user?.id && session?.user?.role !== "ADMIN") {
+  if (order.userId !== user?.id && user?.role !== "ADMIN") {
     return (
       <div className="text-center py-16">
         <p className="text-gray-400">无权查看此订单</p>

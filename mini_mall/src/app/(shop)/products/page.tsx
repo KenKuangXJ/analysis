@@ -4,22 +4,25 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProductFilters } from "@/components/product/ProductFilters";
 import { Pagination } from "@/components/ui/Pagination";
 
+const LIMIT = 9; // 每页 9 条
+
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; q?: string; page?: string }>;
+  searchParams: Promise<{ category?: string; search?: string; q?: string; page?: string }>;
 }) {
-  const { category, q, page: pageStr } = await searchParams;
-  const currentPage = parseInt(pageStr || "1");
-  const limit = 12;
+  const params = await searchParams;
+  const search = params.search || params.q || "";
+  const category = params.category || "";
+  const currentPage = parseInt(params.page || "1");
 
   const where = {
     isPublished: true,
     ...(category && { category: { slug: category } }),
-    ...(q && {
+    ...(search && {
       OR: [
-        { name: { contains: q } },
-        { description: { contains: q } },
+        { name: { contains: search } },
+        { description: { contains: search } },
       ],
     }),
   };
@@ -29,14 +32,14 @@ export default async function ProductsPage({
       where,
       include: { category: true },
       orderBy: { createdAt: "desc" },
-      skip: (currentPage - 1) * limit,
-      take: limit,
+      skip: (currentPage - 1) * LIMIT,
+      take: LIMIT,
     }),
     prisma.product.count({ where }),
     prisma.category.findMany({ orderBy: { name: "asc" } }),
   ]);
 
-  const totalPages = Math.ceil(total / limit);
+  const totalPages = Math.ceil(total / LIMIT);
 
   return (
     <div className="space-y-6">
@@ -45,12 +48,17 @@ export default async function ProductsPage({
       <Suspense>
         <ProductFilters
           categories={categories}
-          currentCategory={category || ""}
+          currentCategory={category}
         />
       </Suspense>
 
       <p className="text-sm text-gray-500">
-        {q && <span>搜索「{q}」— </span>}
+        {search && <span>搜索「{search}」— </span>}
+        {category && (
+          <span>
+            分类「{categories.find((c) => c.slug === category)?.name || category}」—{" "}
+          </span>
+        )}
         共 {total} 件商品
       </p>
 

@@ -3,27 +3,23 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const q = searchParams.get("q") || "";
+  const search = searchParams.get("search") || searchParams.get("q") || "";
   const category = searchParams.get("category") || "";
   const page = parseInt(searchParams.get("page") || "1");
-  const limit = parseInt(searchParams.get("limit") || "12");
-  const sort = searchParams.get("sort") || "newest";
+  const limit = 9; // 每页 9 条
 
   const where = {
     isPublished: true,
     ...(category && { category: { slug: category } }),
-    ...(q && {
+    ...(search && {
       OR: [
-        { name: { contains: q } },
-        { description: { contains: q } },
+        { name: { contains: search } },
+        { description: { contains: search } },
       ],
     }),
   };
 
-  let orderBy: any = { createdAt: "desc" };
-  if (sort === "price_asc") orderBy = { price: "asc" };
-  if (sort === "price_desc") orderBy = { price: "desc" };
-  if (sort === "name") orderBy = { name: "asc" };
+  const orderBy: any = { createdAt: "desc" };
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({

@@ -3,13 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await auth();
+  if (!user?.id) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
   const cart = await prisma.cart.findUnique({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     include: {
       items: {
         include: {
@@ -40,8 +40,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await auth();
+  if (!user?.id) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
@@ -60,11 +60,11 @@ export async function POST(request: Request) {
 
   // 获取或创建购物车
   let cart = await prisma.cart.findUnique({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
   });
   if (!cart) {
     cart = await prisma.cart.create({
-      data: { userId: session.user.id },
+      data: { userId: user.id },
     });
   }
 

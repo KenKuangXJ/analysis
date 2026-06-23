@@ -1,37 +1,66 @@
-import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default withAuth(
-  function middleware(req) {
-    const token = req.nextauth.token;
-    const isLoggedIn = !!token;
-    const isAdmin = token?.role === "ADMIN";
-    const { pathname } = req.nextUrl;
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const sessionCookie = request.cookies.get("session");
+  const isLoggedIn = !!sessionCookie?.value;
 
-    // Admin 路由：非管理员重定向到登录页
-    if (pathname.startsWith("/admin") && !isAdmin) {
-      return NextResponse.redirect(new URL("/auth/login", req.url));
+  // 从 cookie 中提取 role（不做 HMAC 校验，仅作路由导向）
+  let isAdmin = false;
+  if (isLoggedIn) {
+    try {
+      const payload = sessionCookie!.value.split(".")[0];
+      const decoded = Buffer.from(payload, "base64url").toString("utf-8");
+      const data = JSON.parse(decoded) as { role?: string };
+      isAdmin = data.role === "ADMIN";
+    } catch {
+      // cookie 格式异常，按未登录处理
     }
-
-    // 需登录路由
-    if ((pathname.startsWith("/cart") || pathname.startsWith("/orders")) && !isLoggedIn) {
-      return NextResponse.redirect(new URL("/auth/login", req.url));
-    }
-
-    // 已登录用户访问 auth 页面 → 跳转首页
-    if (pathname.startsWith("/auth") && isLoggedIn) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: () => true, // 自定义逻辑全在 middleware 函数中处理
-    },
   }
-);
+
+  // Admin 路由：需管理员
+  if (pathname.startsWith("/admin")) {
+    if (!isLoggedIn) {
+      const loginUrl = new URL("/auth/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  // 需登录的路由
+  if (
+    pathname.startsWith("/cart") ||
+    pathname.startsWith("/orders")
+  ) {
+    if (!isLoggedIn) {
+      const loginUrl = new URL("/auth/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  // 已登录用户访问登录/注册页 → 跳转首页
+  if (
+    (pathname.startsWith("/auth/login") ||
+      pathname.startsWith("/auth/register")) &&
+    isLoggedIn
+  ) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: ["/cart/:path*", "/orders/:path*", "/admin/:path*", "/auth/:path*"],
+  matcher: [
+    "/cart/:path*",
+    "/orders/:path*",
+    "/admin/:path*",
+    "/auth/login",
+    "/auth/register",
+  ],
 };

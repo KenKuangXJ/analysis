@@ -6,8 +6,11 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const product = await prisma.product.findUnique({
-    where: { id },
+  // 优先按 slug 查找，其次按 id（兼容管理后台的 cuid 查询）
+  const product = await prisma.product.findFirst({
+    where: {
+      OR: [{ slug: id }, { id }],
+    },
     include: { category: true },
   });
   if (!product) {

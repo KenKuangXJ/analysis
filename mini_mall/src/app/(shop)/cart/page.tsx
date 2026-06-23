@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/auth/SessionProvider";
 import { useRouter } from "next/navigation";
 import { CartItem } from "@/components/cart/CartItem";
 import { CartSummary } from "@/components/cart/CartSummary";
 
 export default function CartPage() {
-  const { data: session } = useSession();
+  const { user, loading: authLoading } = useSession();
   const router = useRouter();
   const [cart, setCart] = useState<{
     items: any[];
@@ -31,13 +31,16 @@ export default function CartPage() {
   };
 
   useEffect(() => {
-    if (session?.user) fetchCart();
-    else if (session === null) {
-      router.push("/auth/login?callbackUrl=/cart");
+    if (!authLoading) {
+      if (user) {
+        fetchCart();
+      } else {
+        router.push("/auth/login?callbackUrl=/cart");
+      }
     }
-  }, [session]);
+  }, [user, authLoading]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="text-center py-16">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary border-r-transparent" />
@@ -51,7 +54,7 @@ export default function CartPage() {
       <div className="text-center py-16">
         <p className="text-gray-400 text-lg">购物车是空的</p>
         <button
-          onClick={() => router.push("/products")}
+          onClick={() => router.push("/")}
           className="mt-4 text-primary hover:underline"
         >
           去逛逛
@@ -66,7 +69,7 @@ export default function CartPage() {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4">
-          {cart.items.map((item) => (
+          {cart.items.map((item: any) => (
             <CartItem key={item.id} item={item} onUpdate={fetchCart} />
           ))}
         </div>

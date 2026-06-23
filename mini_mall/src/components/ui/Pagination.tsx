@@ -5,9 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
+  basePath?: string;
 }
 
-export function Pagination({ currentPage, totalPages }: PaginationProps) {
+export function Pagination({ currentPage, totalPages, basePath = "/products" }: PaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -20,7 +21,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
     } else {
       params.set("page", String(page));
     }
-    router.push(`/products?${params.toString()}`);
+    router.push(`${basePath}?${params.toString()}`);
   };
 
   const pages: (number | "...")[] = [];

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { OrderCard } from "@/components/order/OrderCard";
 
 export default async function OrdersPage() {
-  const session = await auth();
-  const userId = session?.user?.id;
+  const user = await auth();
+  const userId = user?.id;
 
   if (!userId) {
     return (

@@ -6,8 +6,8 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await auth();
+  if (!user?.id) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
@@ -34,7 +34,7 @@ export async function GET(
   }
 
   // 只有订单本人或管理员可查看
-  if (order.userId !== session.user.id && session.user.role !== "ADMIN") {
+  if (order.userId !== user.id && user.role !== "ADMIN") {
     return NextResponse.json({ error: "无权查看" }, { status: 403 });
   }
 
@@ -45,11 +45,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "请先登录" }, { status: 401 });
-  }
-
+  // 管理员直接放行（middleware 已校验角色）
   const { id } = await params;
   const { status } = await request.json();
 

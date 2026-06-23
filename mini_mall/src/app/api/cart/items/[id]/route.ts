@@ -6,8 +6,8 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await auth();
+  if (!user?.id) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
@@ -20,7 +20,7 @@ export async function PUT(
     include: { cart: true, product: true },
   });
 
-  if (!item || item.cart.userId !== session.user.id) {
+  if (!item || item.cart.userId !== user.id) {
     return NextResponse.json({ error: "无权操作" }, { status: 403 });
   }
 
@@ -43,8 +43,8 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await auth();
+  if (!user?.id) {
     return NextResponse.json({ error: "请先登录" }, { status: 401 });
   }
 
@@ -55,7 +55,7 @@ export async function DELETE(
     include: { cart: true },
   });
 
-  if (!item || item.cart.userId !== session.user.id) {
+  if (!item || item.cart.userId !== user.id) {
     return NextResponse.json({ error: "无权操作" }, { status: 403 });
   }
 

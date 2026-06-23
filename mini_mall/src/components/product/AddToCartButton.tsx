@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/auth/SessionProvider";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 
@@ -12,14 +12,14 @@ export function AddToCartButton({
   productId: string;
   stock: number;
 }) {
-  const { data: session } = useSession();
+  const { user } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
   async function handleAddToCart() {
-    if (!session?.user) {
+    if (!user) {
       router.push("/auth/login?callbackUrl=" + window.location.pathname);
       return;
     }

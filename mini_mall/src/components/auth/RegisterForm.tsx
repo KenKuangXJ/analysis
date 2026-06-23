@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/components/auth/SessionProvider";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export function RegisterForm() {
   const router = useRouter();
+  const { register } = useSession();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,22 +21,23 @@ export function RegisterForm() {
     setError("");
     setLoading(true);
 
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
-
-    const data = await res.json();
-    setLoading(false);
-
-    if (!res.ok) {
-      setError(data.error || "注册失败");
+    if (password.length < 6) {
+      setError("密码至少需要 6 位");
+      setLoading(false);
       return;
     }
 
-    // 注册成功 → 跳转到登录页
-    router.push("/auth/login?registered=true");
+    const result = await register(name, email, password);
+    setLoading(false);
+
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+
+    // 注册成功 → 跳转首页
+    router.push("/");
+    router.refresh();
   }
 
   return (
@@ -70,11 +73,10 @@ export function RegisterForm() {
         id="password"
         label="密码"
         type="password"
-        placeholder="请设置密码（至少6位）"
+        placeholder="请设置密码（至少 6 位）"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-        minLength={6}
       />
 
       <Button type="submit" className="w-full" size="lg" disabled={loading}>

@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/auth/SessionProvider";
 import { Button } from "@/components/ui/Button";
 
 export function Header() {
-  const { data: session } = useSession();
+  const { user } = useSession();
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
@@ -24,7 +24,7 @@ export function Header() {
             全部商品
           </Link>
 
-          {session?.user ? (
+          {user ? (
             <>
               <Link
                 href="/cart"
@@ -38,7 +38,7 @@ export function Header() {
               >
                 我的订单
               </Link>
-              {session.user.role === "ADMIN" && (
+              {user.role === "ADMIN" && (
                 <Link href="/admin">
                   <Button variant="outline" size="sm">
                     后台管理
@@ -46,7 +46,7 @@ export function Header() {
                 </Link>
               )}
               <span className="text-sm text-gray-400">
-                {session.user.name || session.user.email}
+                {user.name || user.email}
               </span>
             </>
           ) : (

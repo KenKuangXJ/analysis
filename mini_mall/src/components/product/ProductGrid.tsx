@@ -8,7 +8,7 @@ interface ProductGridProps {
     price: number;
     comparePrice: number | null;
     images: string;
-    category: { name: string };
+    category: { name: string; slug: string };
   }>;
 }
 

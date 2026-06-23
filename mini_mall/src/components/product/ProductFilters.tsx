@@ -2,20 +2,16 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
-
 interface ProductFiltersProps {
-  categories: Category[];
+  categories: Array<{ id: string; name: string; slug: string }>;
   currentCategory: string;
+  basePath?: string; // 支持首页用 "/"，商品列表页用 "/products"
 }
 
 export function ProductFilters({
   categories,
   currentCategory,
+  basePath = "/products",
 }: ProductFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -28,21 +24,21 @@ export function ProductFilters({
       params.delete("category");
     }
     params.delete("page");
-    router.push(`/products?${params.toString()}`);
+    router.push(`${basePath}?${params.toString()}`);
   };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const q = (formData.get("q") as string).trim();
+    const search = (formData.get("search") as string).trim();
     const params = new URLSearchParams(searchParams.toString());
-    if (q) {
-      params.set("q", q);
+    if (search) {
+      params.set("search", search);
     } else {
-      params.delete("q");
+      params.delete("search");
     }
     params.delete("page");
-    router.push(`/products?${params.toString()}`);
+    router.push(`${basePath}?${params.toString()}`);
   };
 
   return (
@@ -50,9 +46,9 @@ export function ProductFilters({
       {/* 搜索栏 */}
       <form onSubmit={handleSearch} className="flex gap-2">
         <input
-          name="q"
+          name="search"
           type="text"
-          defaultValue={searchParams.get("q") || ""}
+          defaultValue={searchParams.get("search") || searchParams.get("q") || ""}
           placeholder="搜索商品..."
           className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
         />
