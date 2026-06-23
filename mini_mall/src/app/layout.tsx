@@ -3,8 +3,19 @@ import "./globals.css";
 import { SessionProvider } from "@/components/auth/SessionProvider";
 
 export const metadata: Metadata = {
-  title: "Mini Mall - 微型电商",
-  description: "一个基于 Next.js 16 的微型电商项目",
+  title: {
+    template: "%s | Mini Mall",
+    default: "Mini Mall - 微型电商",
+  },
+  description: "发现精选好物，畅享便捷购物体验",
+  keywords: ["电商", "购物", "Mini Mall", "在线商城"],
+  robots: "index, follow",
+  openGraph: {
+    title: "Mini Mall - 微型电商",
+    description: "发现精选好物，畅享便捷购物体验",
+    type: "website",
+    locale: "zh_CN",
+  },
 };
 
 export default function RootLayout({

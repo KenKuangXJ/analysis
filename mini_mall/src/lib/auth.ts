@@ -1,12 +1,12 @@
-import NextAuth from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt" as const },
   pages: {
     signIn: "/auth/login",
   },
@@ -45,17 +45,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user }: { token: any; user?: any }) {
       if (user) {
         token.role = user.role;
         token.id = user.id;
       }
-      if (trigger === "update" && session) {
-        token = { ...token, ...session };
-      }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (session.user) {
         session.user.role = token.role as string;
         session.user.id = token.id as string;
@@ -63,4 +60,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
-});
+};
+
+// 服务端获取当前会话
+export async function auth() {
+  return getServerSession(authOptions);
+}
+
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
