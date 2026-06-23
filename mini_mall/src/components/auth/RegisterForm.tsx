@@ -21,8 +21,8 @@ export function RegisterForm() {
     setError("");
     setLoading(true);
 
-    if (password.length < 6) {
-      setError("密码至少需要 6 位");
+    if (password.length < 8) {
+      setError("密码至少需要 8 位");
       setLoading(false);
       return;
     }
@@ -73,7 +73,7 @@ export function RegisterForm() {
         id="password"
         label="密码"
         type="password"
-        placeholder="请设置密码（至少 6 位）"
+        placeholder="请设置密码（至少 8 位）"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required

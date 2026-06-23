@@ -14,9 +14,9 @@ export async function POST(request: Request) {
       );
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       return NextResponse.json(
-        { error: "密码至少需要 6 位" },
+        { error: "密码至少需要 8 位" },
         { status: 400 }
       );
     }

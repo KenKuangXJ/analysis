@@ -82,7 +82,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         setUser(data);
         return {};
       }
-      return { error: data.error || "登录失败" };
+      return { error: data.error || "邮箱或密码错误" };
     },
     []
   );

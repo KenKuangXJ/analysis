@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
       const data = JSON.parse(decoded) as { role?: string };
       isAdmin = data.role === "ADMIN";
     } catch {
-      // cookie 格式异常，按未登录处理
+      console.warn("[middleware] session cookie 解析失败，按未登录处理");
     }
   }
 

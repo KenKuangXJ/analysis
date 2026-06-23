@@ -45,7 +45,12 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // 管理员直接放行（middleware 已校验角色）
+  const user = await auth();
+  // 仅管理员可修改订单状态
+  if (!user?.id || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "无权操作" }, { status: 403 });
+  }
+
   const { id } = await params;
   const { status } = await request.json();
 
