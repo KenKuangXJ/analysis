@@ -22,16 +22,21 @@ export function LoginForm() {
     setError("");
     setLoading(true);
 
-    const result = await login(email, password);
-    setLoading(false);
+    try {
+      const result = await login(email, password);
 
-    if (result.error) {
-      setError(result.error);
-      return;
+      if (result.error) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
+
+      // 登录成功 — 用 window.location 做硬导航确保 cookie 被浏览器识别
+      window.location.href = callbackUrl;
+    } catch {
+      setError("网络错误，请稍后再试");
+      setLoading(false);
     }
-
-    router.push(callbackUrl);
-    router.refresh();
   }
 
   return (

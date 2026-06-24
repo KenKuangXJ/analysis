@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useSession } from "@/components/auth/SessionProvider";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export function RegisterForm() {
-  const router = useRouter();
   const { register } = useSession();
 
   const [name, setName] = useState("");
@@ -19,25 +17,29 @@ export function RegisterForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
     if (password.length < 8) {
       setError("密码至少需要 8 位");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await register(name, email, password);
+
+      if (result.error) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
+
+      // 注册成功 — 硬导航到首页，确保 session cookie 被浏览器识别
+      window.location.href = "/";
+    } catch {
+      setError("网络错误，请稍后再试");
       setLoading(false);
-      return;
     }
-
-    const result = await register(name, email, password);
-    setLoading(false);
-
-    if (result.error) {
-      setError(result.error);
-      return;
-    }
-
-    // 注册成功 → 跳转首页
-    router.push("/");
-    router.refresh();
   }
 
   return (

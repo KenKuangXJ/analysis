@@ -72,17 +72,21 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   // 登录
   const login = useCallback(
     async (email: string, password: string) => {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setUser(data);
-        return {};
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setUser(data);
+          return {};
+        }
+        return { error: data.error || "邮箱或密码错误" };
+      } catch {
+        return { error: "网络错误，请稍后再试" };
       }
-      return { error: data.error || "邮箱或密码错误" };
     },
     []
   );
@@ -90,17 +94,21 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   // 注册
   const register = useCallback(
     async (name: string, email: string, password: string) => {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setUser(data);
-        return {};
+      try {
+        const res = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setUser(data);
+          return {};
+        }
+        return { error: data.error || "注册失败" };
+      } catch {
+        return { error: "网络错误，请稍后再试" };
       }
-      return { error: data.error || "注册失败" };
     },
     []
   );
