@@ -4,21 +4,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const STATUS_OPTIONS = [
-  { value: "PENDING", label: "待确认" },
-  { value: "CONFIRMED", label: "已确认" },
-  { value: "PROCESSING", label: "处理中" },
+  { value: "PENDING", label: "待付款" },
+  { value: "PAID", label: "已支付" },
   { value: "SHIPPED", label: "已发货" },
-  { value: "DELIVERED", label: "已送达" },
+  { value: "COMPLETED", label: "已完成" },
   { value: "CANCELLED", label: "已取消" },
 ];
+
+interface OrderStatusUpdaterProps {
+  orderId: string;
+  currentStatus: string;
+}
 
 export function OrderStatusUpdater({
   orderId,
   currentStatus,
-}: {
-  orderId: string;
-  currentStatus: string;
-}) {
+}: OrderStatusUpdaterProps) {
   const router = useRouter();
   const [status, setStatus] = useState(currentStatus);
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,9 @@ export function OrderStatusUpdater({
 
     if (res.ok) {
       router.refresh();
+    } else {
+      const data = await res.json();
+      alert(data.error || "更新失败");
     }
   };
 

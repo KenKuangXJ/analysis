@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
+import { PayButton } from "@/components/order/PayButton";
 import Link from "next/link";
 
 export default async function OrderDetailPage({
@@ -40,11 +41,14 @@ export default async function OrderDetailPage({
     );
   }
 
+  const isOwner = order.userId === user?.id;
+  const canPay = isOwner && order.status === "PENDING";
+
   return (
     <div className="space-y-6">
       {/* 面包屑 */}
       <nav className="flex items-center gap-2 text-sm text-gray-400">
-        <Link href="/orders" className="hover:text-primary">
+        <Link href="/orders" className="hover:text-primary transition-colors">
           我的订单
         </Link>
         <span>/</span>
@@ -62,7 +66,10 @@ export default async function OrderDetailPage({
               {formatDate(order.createdAt)}
             </p>
           </div>
-          <OrderStatusBadge status={order.status} />
+          <div className="flex items-center gap-4">
+            <OrderStatusBadge status={order.status} />
+            {canPay && <PayButton orderId={order.id} />}
+          </div>
         </div>
       </div>
 
@@ -72,24 +79,36 @@ export default async function OrderDetailPage({
           <h2 className="font-semibold text-gray-900">商品清单</h2>
         </div>
         <div className="divide-y divide-gray-100">
-          {order.items.map((item) => (
-            <div key={item.id} className="flex items-center gap-4 p-6">
-              <div className="h-16 w-16 shrink-0 rounded-md bg-gray-100 flex items-center justify-center">
-                <span className="text-xs text-gray-400">图片</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-gray-900 truncate">
-                  {item.product?.name || "已下架"}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  {formatPrice(item.price)} × {item.quantity}
+          {order.items.map((item) => {
+            let cover: string | null = null;
+            try {
+              const imgs = item.product?.images ? JSON.parse(item.product.images) : [];
+              if (imgs.length > 0) cover = imgs[0];
+            } catch {}
+
+            return (
+              <div key={item.id} className="flex items-center gap-4 p-6">
+                <div className="h-16 w-16 shrink-0 rounded-md bg-gray-50 flex items-center justify-center overflow-hidden">
+                  {cover ? (
+                    <img src={cover} alt={item.product?.name || ""} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-xs text-gray-400">图片</span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 truncate">
+                    {item.product?.name || "已下架"}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {formatPrice(item.price)} × {item.quantity}
+                  </p>
+                </div>
+                <p className="font-medium text-gray-900">
+                  {formatPrice(item.price * item.quantity)}
                 </p>
               </div>
-              <p className="font-medium text-gray-900">
-                {formatPrice(item.price * item.quantity)}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -107,7 +126,7 @@ export default async function OrderDetailPage({
           </div>
           <div className="border-t pt-2 flex justify-between text-lg font-bold">
             <span>实付金额</span>
-            <span className="text-danger">{formatPrice(order.totalAmount)}</span>
+            <span className="text-[#f43f5e]">{formatPrice(order.totalAmount)}</span>
           </div>
         </div>
       </div>
