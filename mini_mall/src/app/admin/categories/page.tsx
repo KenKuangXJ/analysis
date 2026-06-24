@@ -55,7 +55,6 @@ export default async function AdminCategoriesPage() {
                       编辑
                     </Link>
                     <DeleteButton
-                      id={cat.id}
                       name={cat.name}
                       apiPath={`/api/categories/${cat.id}`}
                     />

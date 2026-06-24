@@ -4,12 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface DeleteButtonProps {
-  id: string;
   name: string;
   apiPath: string;
 }
 
-export function DeleteButton({ id, name, apiPath }: DeleteButtonProps) {
+export function DeleteButton({ name, apiPath }: DeleteButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

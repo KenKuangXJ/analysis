@@ -82,7 +82,6 @@ export default async function AdminProductsPage() {
                         编辑
                       </Link>
                       <DeleteButton
-                        id={product.id}
                         name={product.name}
                         apiPath={`/api/products/${product.id}`}
                       />

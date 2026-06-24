@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 // 各状态下可执行的快捷操作
 const QUICK_ACTIONS: Record<string, { label: string; nextStatus: string; className: string }[]> = {
-  PENDING: [{ label: "发货", nextStatus: "SHIPPED", className: "bg-blue-100 text-blue-700 hover:bg-blue-200" }],
+  PENDING: [{ label: "支付", nextStatus: "PAID", className: "bg-blue-100 text-blue-700 hover:bg-blue-200" }],
   PAID: [{ label: "发货", nextStatus: "SHIPPED", className: "bg-blue-100 text-blue-700 hover:bg-blue-200" }],
   SHIPPED: [{ label: "完成", nextStatus: "COMPLETED", className: "bg-green-100 text-green-700 hover:bg-green-200" }],
   COMPLETED: [],
