@@ -20,7 +20,14 @@ export async function verifyPassword(
 
 // ============ 会话签名 ============
 
-const SECRET = process.env.NEXTAUTH_SECRET || "dev-secret-change-in-production";
+// 会话签名密钥 —— 必须通过环境变量设置，无回退值
+const SECRET = (() => {
+  const s = process.env.NEXTAUTH_SECRET;
+  if (!s) {
+    throw new Error("NEXTAUTH_SECRET 环境变量未设置，服务拒绝启动");
+  }
+  return s;
+})();
 const COOKIE_NAME = "session";
 const MAX_AGE = 7 * 24 * 60 * 60; // 7 天（秒）
 
