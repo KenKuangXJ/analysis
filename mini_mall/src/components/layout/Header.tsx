@@ -48,6 +48,15 @@ export function Header() {
               <span className="text-sm text-gray-400">
                 {user.name || user.email}
               </span>
+              <button
+                onClick={async () => {
+                  await fetch("/api/auth/logout", { method: "POST" });
+                  window.location.href = "/";
+                }}
+                className="text-sm text-gray-400 hover:text-red-500 transition-colors"
+              >
+                退出
+              </button>
             </>
           ) : (
             <>
