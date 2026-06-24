@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "@/components/auth/SessionProvider";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export function RegisterForm() {
-  const { register } = useSession();
+  const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,16 +26,21 @@ export function RegisterForm() {
     setLoading(true);
 
     try {
-      const result = await register(name, email, password);
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
 
-      if (result.error) {
-        setError(result.error);
+      if (!res.ok) {
+        setError(data.error || "注册失败");
         setLoading(false);
         return;
       }
 
-      // 注册成功 — 硬导航到首页，确保 session cookie 被浏览器识别
-      window.location.href = "/";
+      // 注册成功 → 跳转首页
+      router.push("/");
     } catch {
       setError("网络错误，请稍后再试");
       setLoading(false);

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "@/components/auth/SessionProvider";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
@@ -10,7 +9,6 @@ export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
-  const { login } = useSession();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,16 +21,21 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      const result = await login(email, password);
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-      if (result.error) {
-        setError(result.error);
+      if (!res.ok) {
+        setError(data.error || "邮箱或密码错误");
         setLoading(false);
         return;
       }
 
-      // 登录成功 — 用 window.location 做硬导航确保 cookie 被浏览器识别
-      window.location.href = callbackUrl;
+      // 登录成功 → 跳转
+      router.push(callbackUrl);
     } catch {
       setError("网络错误，请稍后再试");
       setLoading(false);
