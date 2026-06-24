@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
 export async function GET(
   _request: Request,
@@ -26,6 +27,10 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const user = await auth();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "无权操作" }, { status: 403 });
+  }
   const { id } = await params;
   const data = await request.json();
   const product = await prisma.product.update({
@@ -42,6 +47,10 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const user = await auth();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "无权操作" }, { status: 403 });
+  }
   const { id } = await params;
   await prisma.product.delete({ where: { id } });
   return NextResponse.json({ success: true });

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -44,6 +45,11 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
+  const user = await auth();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "无权操作" }, { status: 403 });
+  }
+
   const data = await request.json();
   if (!data.name || !data.slug || !data.price || !data.categoryId) {
     return NextResponse.json(

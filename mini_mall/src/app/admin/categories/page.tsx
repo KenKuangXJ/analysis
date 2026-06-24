@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { DeleteButton } from "@/components/ui/DeleteButton";
 
 export default async function AdminCategoriesPage() {
   const categories = await prisma.category.findMany({
@@ -46,12 +47,19 @@ export default async function AdminCategoriesPage() {
                   {cat._count.products}
                 </td>
                 <td className="px-6 py-3 text-right">
-                  <Link
-                    href={`/admin/categories/${cat.id}/edit`}
-                    className="text-primary hover:underline text-xs"
-                  >
-                    编辑
-                  </Link>
+                  <div className="flex items-center justify-end gap-3">
+                    <Link
+                      href={`/admin/categories/${cat.id}/edit`}
+                      className="text-primary hover:underline text-xs"
+                    >
+                      编辑
+                    </Link>
+                    <DeleteButton
+                      id={cat.id}
+                      name={cat.name}
+                      apiPath={`/api/categories/${cat.id}`}
+                    />
+                  </div>
                 </td>
               </tr>
             ))}

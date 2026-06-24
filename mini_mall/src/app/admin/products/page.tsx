@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
+import { DeleteButton } from "@/components/ui/DeleteButton";
 
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
@@ -33,48 +34,63 @@ export default async function AdminProductsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {products.map((product) => (
-              <tr key={product.id} className="hover:bg-gray-50">
-                <td className="px-6 py-3 font-medium text-gray-900">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded bg-gray-100 flex items-center justify-center">
-                      <span className="text-xs text-gray-400">图</span>
+            {products.map((product) => {
+              let cover: string | null = null;
+              try {
+                const imgs = JSON.parse(product.images);
+                if (imgs.length > 0) cover = imgs[0];
+              } catch {}
+
+              return (
+                <tr key={product.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-3 font-medium text-gray-900">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded bg-gray-50 flex items-center justify-center overflow-hidden shrink-0">
+                        {cover ? (
+                          <img src={cover} alt={product.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-xs text-gray-400">图</span>
+                        )}
+                      </div>
+                      <span className="truncate max-w-[200px]">{product.name}</span>
                     </div>
-                    <span>{product.name}</span>
-                  </div>
-                </td>
-                <td className="px-6 py-3 text-gray-600">
-                  {product.category.name}
-                </td>
-                <td className="px-6 py-3 text-right font-medium">
-                  {formatPrice(product.price)}
-                </td>
-                <td className="px-6 py-3 text-right">
-                  <span
-                    className={
-                      product.stock < 5 ? "text-danger font-medium" : ""
-                    }
-                  >
-                    {product.stock}
-                  </span>
-                </td>
-                <td className="px-6 py-3 text-center">
-                  {product.isPublished ? (
-                    <span className="text-green-600 text-xs">已发布</span>
-                  ) : (
-                    <span className="text-gray-400 text-xs">草稿</span>
-                  )}
-                </td>
-                <td className="px-6 py-3 text-right">
-                  <Link
-                    href={`/admin/products/${product.id}/edit`}
-                    className="text-primary hover:underline text-xs"
-                  >
-                    编辑
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-6 py-3 text-gray-600">
+                    {product.category.name}
+                  </td>
+                  <td className="px-6 py-3 text-right font-medium">
+                    {formatPrice(product.price)}
+                  </td>
+                  <td className="px-6 py-3 text-right">
+                    <span className={product.stock < 5 ? "text-danger font-medium" : ""}>
+                      {product.stock}
+                    </span>
+                  </td>
+                  <td className="px-6 py-3 text-center">
+                    {product.isPublished ? (
+                      <span className="text-green-600 text-xs">已发布</span>
+                    ) : (
+                      <span className="text-gray-400 text-xs">草稿</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-3 text-right">
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        href={`/admin/products/${product.id}/edit`}
+                        className="text-primary hover:underline text-xs"
+                      >
+                        编辑
+                      </Link>
+                      <DeleteButton
+                        id={product.id}
+                        name={product.name}
+                        apiPath={`/api/products/${product.id}`}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

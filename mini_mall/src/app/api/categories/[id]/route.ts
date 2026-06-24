@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
 export async function GET(
   _request: Request,
@@ -20,6 +21,11 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const user = await auth();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "无权操作" }, { status: 403 });
+  }
+
   const { id } = await params;
   const { name, slug, description } = await request.json();
   const category = await prisma.category.update({
@@ -33,7 +39,22 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const user = await auth();
+  if (!user || user.role !== "ADMIN") {
+    return NextResponse.json({ error: "无权操作" }, { status: 403 });
+  }
+
   const { id } = await params;
+
+  // 检查是否有商品关联到此分类
+  const productCount = await prisma.product.count({ where: { categoryId: id } });
+  if (productCount > 0) {
+    return NextResponse.json(
+      { error: `该分类下有 ${productCount} 件商品，无法删除` },
+      { status: 400 }
+    );
+  }
+
   await prisma.category.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }

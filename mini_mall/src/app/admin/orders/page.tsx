@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
+import { OrderActionButtons } from "@/components/order/OrderActionButtons";
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
@@ -25,6 +26,7 @@ export default async function AdminOrdersPage() {
               <th className="px-6 py-3 text-right">金额</th>
               <th className="px-6 py-3 text-center">件数</th>
               <th className="px-6 py-3 text-center">状态</th>
+              <th className="px-6 py-3 text-center">操作</th>
               <th className="px-6 py-3 text-right">时间</th>
             </tr>
           </thead>
@@ -49,6 +51,12 @@ export default async function AdminOrdersPage() {
                 <td className="px-6 py-3 text-center">
                   <OrderStatusBadge status={order.status} />
                 </td>
+                <td className="px-6 py-3 text-center">
+                  <OrderActionButtons
+                    orderId={order.id}
+                    currentStatus={order.status}
+                  />
+                </td>
                 <td className="px-6 py-3 text-right text-gray-400 text-xs">
                   {formatDate(order.createdAt)}
                 </td>
@@ -56,7 +64,7 @@ export default async function AdminOrdersPage() {
             ))}
             {orders.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center text-gray-400">
+                <td colSpan={7} className="px-6 py-8 text-center text-gray-400">
                   暂无订单
                 </td>
               </tr>
