@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { formatPrice } from "@/lib/utils";
 
 interface CartItemData {
@@ -21,67 +22,117 @@ interface CartItemProps {
 }
 
 export function CartItem({ item, onUpdate }: CartItemProps) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // 解析商品图片，取第一张作为封面
+  let coverImage: string | null = null;
+  try {
+    const imgs: string[] = JSON.parse(item.product.images);
+    if (imgs.length > 0) coverImage = imgs[0];
+  } catch {
+    // 解析失败使用占位图
+  }
+
   const updateQuantity = async (quantity: number) => {
     if (quantity < 1) return;
+    setError("");
+    setLoading(true);
     const res = await fetch(`/api/cart/items/${item.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ quantity }),
     });
-    if (res.ok) onUpdate();
+    setLoading(false);
+    if (res.ok) {
+      onUpdate();
+    } else {
+      const data = await res.json();
+      setError(data.error || "操作失败");
+    }
   };
 
   const removeItem = async () => {
-    const res = await fetch(`/api/cart/items/${item.id}`, {
-      method: "DELETE",
-    });
+    if (!window.confirm(`确定要删除「${item.product.name}」吗？`)) return;
+    setLoading(true);
+    const res = await fetch(`/api/cart/items/${item.id}`, { method: "DELETE" });
+    setLoading(false);
     if (res.ok) onUpdate();
   };
 
   return (
-    <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4">
-      {/* 图片占位 */}
-      <div className="h-20 w-20 shrink-0 rounded-md bg-gray-100 flex items-center justify-center">
-        <span className="text-xs text-gray-400">图片</span>
+    <div
+      className={`flex items-center gap-4 rounded-lg border bg-white p-4 transition-opacity ${
+        loading ? "opacity-50 pointer-events-none" : "border-gray-200"
+      }`}
+    >
+      {/* 商品图片 */}
+      <div className="h-20 w-20 shrink-0 rounded-md bg-gray-50 flex items-center justify-center overflow-hidden">
+        {coverImage ? (
+          <img
+            src={coverImage}
+            alt={item.product.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <svg
+            className="h-8 w-8 text-gray-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1}
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        )}
       </div>
 
-      {/* 信息 */}
+      {/* 商品信息 */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-medium text-gray-900 truncate">{item.product.name}</h3>
-        <p className="mt-1 text-sm text-primary font-medium">
+        <h3 className="font-medium text-gray-900 truncate">
+          {item.product.name}
+        </h3>
+        <p className="mt-1 text-sm text-gray-500">
           {formatPrice(item.product.price)}
         </p>
+        {error && (
+          <p className="mt-1 text-xs text-red-500">{error}</p>
+        )}
       </div>
 
       {/* 数量控制 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <button
           onClick={() => updateQuantity(item.quantity - 1)}
-          disabled={item.quantity <= 1}
-          className="h-8 w-8 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40"
+          disabled={item.quantity <= 1 || loading}
+          className="h-8 w-8 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          -
+          −
         </button>
-        <span className="w-10 text-center text-sm font-medium">
+        <span className="w-10 text-center text-sm font-medium tabular-nums">
           {item.quantity}
         </span>
         <button
           onClick={() => updateQuantity(item.quantity + 1)}
-          disabled={item.quantity >= item.product.stock}
-          className="h-8 w-8 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40"
+          disabled={item.quantity >= item.product.stock || loading}
+          className="h-8 w-8 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           +
         </button>
       </div>
 
       {/* 小计 + 删除 */}
-      <div className="text-right space-y-1">
-        <p className="font-medium text-gray-900">
+      <div className="text-right space-y-1 shrink-0">
+        <p className="font-medium text-gray-900 tabular-nums">
           {formatPrice(item.product.price * item.quantity)}
         </p>
         <button
           onClick={removeItem}
-          className="text-xs text-gray-400 hover:text-danger transition-colors"
+          className="text-xs text-gray-400 hover:text-red-500 transition-colors"
         >
           删除
         </button>
