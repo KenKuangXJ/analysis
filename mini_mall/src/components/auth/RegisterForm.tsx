@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export function RegisterForm() {
-  const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,7 +38,7 @@ export function RegisterForm() {
       }
 
       // 注册成功 → 跳转首页
-      router.push("/");
+      window.location.href = "/";
     } catch {
       setError("网络错误，请稍后再试");
       setLoading(false);

@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
-export function LoginForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+/** 从当前 URL 解析 callbackUrl，避免依赖 useSearchParams + Suspense */
+function getCallbackUrl(): string {
+  if (typeof window === "undefined") return "/";
+  const params = new URLSearchParams(window.location.search);
+  return params.get("callbackUrl") || "/";
+}
 
+export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -34,8 +36,8 @@ export function LoginForm() {
         return;
       }
 
-      // 登录成功 → 跳转
-      router.push(callbackUrl);
+      // 登录成功，用浏览器原生跳转确保 cookie 生效
+      window.location.href = getCallbackUrl();
     } catch {
       setError("网络错误，请稍后再试");
       setLoading(false);
