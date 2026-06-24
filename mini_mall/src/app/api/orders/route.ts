@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma, orderWithItemsInclude } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { generateOrderNumber } from "@/lib/utils";
 
@@ -16,15 +16,7 @@ export async function GET(request: Request) {
   const [orders, total] = await Promise.all([
     prisma.order.findMany({
       where: { userId: user.id },
-      include: {
-        items: {
-          include: {
-            product: {
-              select: { id: true, name: true, images: true, slug: true },
-            },
-          },
-        },
-      },
+      include: orderWithItemsInclude,
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * limit,
       take: limit,
@@ -98,15 +90,7 @@ export async function POST(request: Request) {
           })),
         },
       },
-      include: {
-        items: {
-          include: {
-            product: {
-              select: { id: true, name: true, images: true, slug: true },
-            },
-          },
-        },
-      },
+      include: orderWithItemsInclude,
     });
 
     // 扣减库存

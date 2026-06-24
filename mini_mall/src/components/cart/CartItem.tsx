@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getFirstImage } from "@/lib/utils";
 
 interface CartItemData {
   id: string;
@@ -25,14 +25,7 @@ export function CartItem({ item, onUpdate }: CartItemProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // 解析商品图片，取第一张作为封面
-  let coverImage: string | null = null;
-  try {
-    const imgs: string[] = JSON.parse(item.product.images);
-    if (imgs.length > 0) coverImage = imgs[0];
-  } catch {
-    // 解析失败使用占位图
-  }
+  const coverImage = getFirstImage(item.product.images);
 
   const updateQuantity = async (quantity: number) => {
     if (quantity < 1) return;

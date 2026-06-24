@@ -22,6 +22,23 @@ export function formatDate(date: Date | string): string {
   }).format(new Date(date));
 }
 
+/** 解析商品 images JSON 字符串，返回字符串数组 */
+export function parseImages(imagesJson: string | null | undefined): string[] {
+  if (!imagesJson) return [];
+  try {
+    const parsed = JSON.parse(imagesJson);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+/** 获取商品封面图（第一张） */
+export function getFirstImage(imagesJson: string | null | undefined): string | null {
+  const imgs = parseImages(imagesJson);
+  return imgs.length > 0 ? imgs[0] : null;
+}
+
 export function generateOrderNumber(): string {
   const now = new Date();
   const datePart =

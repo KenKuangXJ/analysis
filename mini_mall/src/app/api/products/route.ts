@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -45,8 +45,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
-  const user = await auth();
-  if (!user || user.role !== "ADMIN") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json({ error: "无权操作" }, { status: 403 });
   }
 

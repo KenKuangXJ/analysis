@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getFirstImage } from "@/lib/utils";
 import { DeleteButton } from "@/components/ui/DeleteButton";
 
 export default async function AdminProductsPage() {
@@ -35,11 +35,7 @@ export default async function AdminProductsPage() {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {products.map((product) => {
-              let cover: string | null = null;
-              try {
-                const imgs = JSON.parse(product.images);
-                if (imgs.length > 0) cover = imgs[0];
-              } catch {}
+              const cover = getFirstImage(product.images);
 
               return (
                 <tr key={product.id} className="hover:bg-gray-50">

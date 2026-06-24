@@ -127,3 +127,10 @@ export async function clearSession() {
 export async function auth() {
   return getCurrentUser();
 }
+
+/** 校验管理员身份，不是管理员则返回 null */
+export async function requireAdmin() {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "ADMIN") return null;
+  return user;
+}

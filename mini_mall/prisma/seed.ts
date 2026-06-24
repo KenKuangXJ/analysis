@@ -74,6 +74,7 @@ async function main() {
       stock: 100,
       isFeatured: true,
       categoryId: catMap.electronics,
+      images: ["https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=800&h=800&fit=crop"],
     },
     {
       name: "机械键盘 87键",
@@ -147,8 +148,8 @@ async function main() {
       categoryId: catMap.sports,
     },
     {
-      name: "不锈钢保温杯 500ml",
-      slug: "insulated-water-bottle-500",
+      name: "日式玻璃咖啡杯 380ml",
+      slug: "japanese-glass-coffee-mug",
       description: "316 不锈钢内胆，12 小时保温/保冷。轻量便携，办公室户外皆适用。",
       price: 99.00,
       stock: 80,

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 
 export async function GET(
   _request: Request,
@@ -27,8 +27,8 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const user = await auth();
-  if (!user || user.role !== "ADMIN") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json({ error: "无权操作" }, { status: 403 });
   }
   const { id } = await params;
@@ -47,8 +47,8 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const user = await auth();
-  if (!user || user.role !== "ADMIN") {
+  const user = await requireAdmin();
+  if (!user) {
     return NextResponse.json({ error: "无权操作" }, { status: 403 });
   }
   const { id } = await params;

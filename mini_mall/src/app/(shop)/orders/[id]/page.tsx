@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { formatPrice, formatDate } from "@/lib/utils";
+import { formatPrice, formatDate, getFirstImage } from "@/lib/utils";
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
 import { PayButton } from "@/components/order/PayButton";
 import Link from "next/link";
@@ -80,11 +80,7 @@ export default async function OrderDetailPage({
         </div>
         <div className="divide-y divide-gray-100">
           {order.items.map((item) => {
-            let cover: string | null = null;
-            try {
-              const imgs = item.product?.images ? JSON.parse(item.product.images) : [];
-              if (imgs.length > 0) cover = imgs[0];
-            } catch {}
+            const cover = getFirstImage(item.product?.images);
 
             return (
               <div key={item.id} className="flex items-center gap-4 p-6">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getFirstImage } from "@/lib/utils";
 
 interface ProductCardProps {
   product: {
@@ -14,14 +14,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  // 解析商品图片，取第一张作为封面
-  let coverImage: string | null = null;
-  try {
-    const images: string[] = JSON.parse(product.images);
-    if (images.length > 0) coverImage = images[0];
-  } catch {
-    // images 字段解析失败则使用占位图
-  }
+  const coverImage = getFirstImage(product.images);
 
   return (
     <Link

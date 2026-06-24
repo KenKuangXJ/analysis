@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma, orderWithItemsInclude } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
 // 状态流转规则
@@ -9,6 +9,17 @@ const ALLOWED_TRANSITIONS: Record<string, string[]> = {
   SHIPPED: ["COMPLETED", "CANCELLED"],
   COMPLETED: ["CANCELLED"],
   CANCELLED: [],
+  // 旧状态兼容（数据迁移过渡期）
+  CONFIRMED: ["SHIPPED", "CANCELLED"],
+  PROCESSING: ["COMPLETED", "CANCELLED"],
+  DELIVERED: ["CANCELLED"],
+};
+
+// 旧状态 → 新状态映射（数据迁移）
+const STATUS_MIGRATION_MAP: Record<string, string> = {
+  CONFIRMED: "PAID",
+  PROCESSING: "SHIPPED",
+  DELIVERED: "COMPLETED",
 };
 
 export async function GET(
@@ -25,13 +36,7 @@ export async function GET(
   const order = await prisma.order.findUnique({
     where: { id },
     include: {
-      items: {
-        include: {
-          product: {
-            select: { id: true, name: true, images: true, slug: true },
-          },
-        },
-      },
+      ...orderWithItemsInclude,
       user: {
         select: { id: true, name: true, email: true },
       },
@@ -62,11 +67,18 @@ export async function PUT(
   const { id } = await params;
   const { status: newStatus } = await request.json();
 
-  // 获取当前订单
-  const order = await prisma.order.findUnique({ where: { id } });
+  // 仅查询权限校验所需字段
+  const order = await prisma.order.findUnique({
+    where: { id },
+    select: { status: true, userId: true },
+  });
   if (!order) {
     return NextResponse.json({ error: "订单不存在" }, { status: 404 });
   }
+
+  // 规范化旧状态（数据迁移过渡期）
+  const currentStatus = STATUS_MIGRATION_MAP[order.status] || order.status;
+  const targetStatus = STATUS_MIGRATION_MAP[newStatus] || newStatus;
 
   const isAdmin = user.role === "ADMIN";
   const isOwner = order.userId === user.id;
@@ -76,36 +88,25 @@ export async function PUT(
     return NextResponse.json({ error: "无权操作" }, { status: 403 });
   }
 
-  // 模拟支付：仅订单本人可操作 PENDING → PAID
-  if (!isAdmin && order.status === "PENDING" && newStatus === "PAID") {
-    // 允许
-  } else if (!isAdmin) {
-    // 非管理员只能做 模拟支付
+  // 非管理员仅允许本人 PENDING→PAID
+  const canUpdate = isAdmin || (isOwner && currentStatus === "PENDING" && targetStatus === "PAID");
+  if (!canUpdate) {
     return NextResponse.json({ error: "无权操作" }, { status: 403 });
   }
 
   // 验证状态流转合法性
-  const allowed = ALLOWED_TRANSITIONS[order.status];
-  if (!allowed || !allowed.includes(newStatus)) {
+  const allowed = ALLOWED_TRANSITIONS[currentStatus];
+  if (!allowed || !allowed.includes(targetStatus)) {
     return NextResponse.json(
-      { error: `不能从「${order.status}」变更为「${newStatus}」` },
+      { error: `不能从「${currentStatus}」变更为「${targetStatus}」` },
       { status: 400 }
     );
   }
 
-  const updated = await prisma.order.update({
+  await prisma.order.update({
     where: { id },
-    data: { status: newStatus },
-    include: {
-      items: {
-        include: {
-          product: {
-            select: { id: true, name: true, images: true, slug: true },
-          },
-        },
-      },
-    },
+    data: { status: targetStatus },
   });
 
-  return NextResponse.json(updated);
+  return NextResponse.json({ success: true, status: targetStatus });
 }

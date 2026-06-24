@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { formatPrice, cn } from "@/lib/utils";
+import { formatPrice, cn, parseImages } from "@/lib/utils";
 import { AddToCartButton } from "@/components/product/AddToCartButton";
 import Link from "next/link";
 
@@ -20,8 +20,8 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  // 解析商品图片，过滤无效路径
-  const images: string[] = JSON.parse(product.images);
+  // 解析商品图片
+  const images = parseImages(product.images);
   const mainImage = images.length > 0 ? images[0] : null;
   const thumbnails = images.length > 1 ? images : [];
 
