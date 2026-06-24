@@ -19,15 +19,13 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Admin 路由：需管理员
+  // Admin 路由：需管理员身份
   if (pathname.startsWith("/admin")) {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !isAdmin) {
+      // 未登录或非管理员 → 统一跳转登录页，方便切换账号
       const loginUrl = new URL("/auth/login", request.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
-    }
-    if (!isAdmin) {
-      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 

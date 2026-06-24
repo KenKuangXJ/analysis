@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
+import { OrderStatusBadge } from "@/components/order/OrderStatusBadge";
 import Link from "next/link";
 
 export default async function AdminDashboard() {
@@ -84,9 +85,7 @@ export default async function AdminDashboard() {
                     {formatPrice(order.totalAmount)}
                   </td>
                   <td className="px-6 py-3">
-                    <span className="inline-flex rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
-                      {order.status}
-                    </span>
+                    <OrderStatusBadge status={order.status} />
                   </td>
                 </tr>
               ))}
